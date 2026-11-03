@@ -1,0 +1,43 @@
+# Change only this value to switch the default model for all LLM commands.
+[models]
+default = "opencode-go-minimax-m3"
+
+# OpenCode Go: Anthropic Messages endpoint (current recommended project default).
+[models.profiles.opencode-go-minimax-m3]
+provider = "opencode-go"
+model = "minimax-m3"
+protocol = "anthropic-compatible"
+base_url = "https://opencode.ai/zen/go"
+api_key_env = "OPENCODE_API_KEY"
+timeout_seconds = 120
+max_tokens = 4000
+
+# OpenCode Go: example model served through OpenAI Chat Completions.
+[models.profiles.opencode-go-kimi-k3]
+provider = "opencode-go"
+model = "kimi-k3"
+protocol = "openai-compatible"
+base_url = "https://opencode.ai/zen/go"
+api_key_env = "OPENCODE_API_KEY"
+timeout_seconds = 120
+max_tokens = 4000
+
+# Profile names containing dots must be quoted. This model uses Chat Completions.
+[models.profiles."opencode-go-deepseek-v4.1-flash"]
+provider = "opencode-go"
+model = "deepseek-v4.1-flash"
+protocol = "openai-compatible"
+base_url = "https://opencode.ai/zen/go"
+api_key_env = "OPENCODE_API_KEY"
+timeout_seconds = 120
+max_tokens = 4000
+
+# Previous direct MiniMax configuration retained as an optional fallback profile.
+[models.profiles.minimax-direct-m2_7]
+provider = "minimax-cn"
+model = "MiniMax-M2.7"
+protocol = "anthropic-compatible"
+base_url = "https://api.minimaxi.com/anthropic"
+api_key_env = "MINIMAX_CN_API_KEY"
+timeout_seconds = 120
+max_tokens = 4000

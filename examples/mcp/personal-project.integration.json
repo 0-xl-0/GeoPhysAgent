@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "protocol_version": "2025-11-25",
+  "id": "personal-project-example",
+  "version": "0.1.0",
+  "display_name": "Personal project MCP wrapper",
+  "transport": {
+    "type": "stdio",
+    "command": "{python}",
+    "args": ["{manifest_dir}/personal_project_server.py"],
+    "cwd": ".",
+    "command_allowlist": ["{python}"],
+    "cwd_allowlist": ["."],
+    "env_allowlist": []
+  },
+  "timeouts": {"connect_seconds": 5, "call_seconds": 10, "shutdown_seconds": 2},
+  "restart": {"max_restarts": 0},
+  "permissions": {
+    "read_assets": false,
+    "write_artifacts": false,
+    "network": false,
+    "external_control": false,
+    "modify": false,
+    "destructive": false
+  },
+  "tools": [
+    {
+      "remote_name": "curve_summary",
+      "geo_name": "personal.curve_summary",
+      "version": "0.1.0",
+      "schema_version": "1.0",
+      "model_name": "personal_curve_summary",
+      "purpose": "调用个人项目中的确定性曲线统计函数。",
+      "usage_guidance": "只传有限长度的数值数组；不读取文件、不访问网络。",
+      "input_capabilities": [],
+      "risk": "compute",
+      "read_only": true,
+      "idempotent": true,
+      "replay_policy": "safe",
+      "requires_structured_content": true,
+      "expected_evidence_types": ["tool_result", "fact"],
+      "expected_artifact_roles": []
+    }
+  ]
+}

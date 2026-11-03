@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install locked development environment
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements-dev.lock
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Quality and offline tests
+        shell: pwsh
+        run: ./scripts/quality.ps1
+      - name: Reproducible package build
+        shell: pwsh
+        run: ./scripts/build-release.ps1

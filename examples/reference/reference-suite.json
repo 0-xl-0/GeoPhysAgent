@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "suite_id": "geophysagent.increment-8-candidate",
+  "version": "1.0.0",
+  "description": "One LAS reference application plus SEG-Y and external-only cross-domain proofs. Run directories are supplied by the operator and are never created by the evaluator.",
+  "cases": [
+    {
+      "case_id": "las-normal",
+      "run_directory": "las-normal",
+      "expected_workflow": "well-log-qc",
+      "input_kind": "asset",
+      "required_capabilities": ["well_log.qc"],
+      "allowed_tools": ["las.run_qc"],
+      "required_tools": ["las.run_qc"],
+      "required_evidence_ids": ["las-analysis", "las-validation", "las-result-artifact", "las-final-report", "las-figure", "las-figure-metadata"],
+      "required_validator_ids": ["core.data.validation_evidence", "core.process.required_evidence", "core.result.artifact_integrity", "core.result.final_artifact_evidence"],
+      "required_artifact_roles": ["data", "final_report", "figure", "figure_metadata"],
+      "required_report_sections": ["观测事实", "确定性规则判断", "模型解释", "假设", "未解决问题", "能力边界"],
+      "accepted_statuses": ["completed", "completed_with_warnings"],
+      "assertions": [
+        {"assertion_id": "las-row-count", "source": "evidence:las-analysis", "selector": "/tool_results/0/data/row_count", "operator": "exact", "expected": 8},
+        {"assertion_id": "las-rule-pack", "source": "evidence:las-analysis", "selector": "/tool_results/2/data/rule_pack/version", "operator": "exact", "expected": "1.0.0"},
+        {"assertion_id": "las-figure-source", "source": "artifact:figure_metadata", "selector": "/source_result_ids", "operator": "contains", "expected": "las.quality-rules"}
+      ],
+      "forbidden_report_phrases": ["确定为油层", "保证可用于解释"],
+      "metadata": {"fixture_class": "synthetic", "professional_review": "required"}
+    },
+    {
+      "case_id": "segy-synthetic",
+      "run_directory": "segy-synthetic",
+      "expected_workflow": "segy-readonly-inspection",
+      "input_kind": "asset",
+      "required_capabilities": ["seismic.segy.inspect"],
+      "allowed_tools": ["seismic.inspect_segy"],
+      "required_tools": ["seismic.inspect_segy"],
+      "required_evidence_ids": ["segy-binary-header", "segy-trace-summary", "segy-amplitude-statistics", "segy-validation", "segy-result-artifact", "segy-final-report"],
+      "required_validator_ids": ["core.data.validation_evidence", "core.process.required_evidence", "core.result.artifact_integrity", "core.result.final_artifact_evidence"],
+      "required_artifact_roles": ["data", "final_report"],
+      "required_report_sections": ["观测事实", "确定性规则判断", "模型解释", "假设", "未解决问题", "能力边界"],
+      "accepted_statuses": ["completed", "completed_with_warnings"],
+      "metadata": {"fixture_class": "synthetic", "scope": "cross-domain contract proof"}
+    },
+    {
+      "case_id": "software-a-external-only",
+      "run_directory": "software-a-external-only",
+      "expected_workflow": "general-llm-agent",
+      "input_kind": "external",
+      "require_context_snapshots": true,
+      "allowed_tools": ["software_a.list_seismic_datasets"],
+      "required_tools": ["software_a.list_seismic_datasets"],
+      "required_evidence_ids": ["list-seismic-result"],
+      "required_validator_ids": ["core.data.validation_evidence", "core.process.required_evidence", "core.result.artifact_integrity", "core.result.final_artifact_evidence"],
+      "required_artifact_roles": ["final_answer"],
+      "accepted_statuses": ["completed", "completed_with_warnings"],
+      "metadata": {"fixture_class": "loopback API", "scope": "zero-asset cross-domain contract proof"}
+    }
+  ]
+}

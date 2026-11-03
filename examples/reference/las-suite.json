@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "suite_id": "geophysagent.las-reference-smoke",
+  "version": "1.0.0",
+  "description": "Single synthetic LAS case for a local reference-product smoke test.",
+  "cases": [
+    {
+      "case_id": "las-normal",
+      "run_directory": "las-normal",
+      "expected_workflow": "well-log-qc",
+      "input_kind": "asset",
+      "required_capabilities": ["well_log.qc"],
+      "allowed_tools": ["las.run_qc"],
+      "required_tools": ["las.run_qc"],
+      "required_evidence_ids": ["las-analysis", "las-validation", "las-result-artifact", "las-final-report", "las-figure", "las-figure-metadata"],
+      "required_validator_ids": ["core.data.validation_evidence", "core.process.required_evidence", "core.result.artifact_integrity", "core.result.final_artifact_evidence"],
+      "required_artifact_roles": ["data", "final_report", "figure", "figure_metadata"],
+      "required_report_sections": ["观测事实", "确定性规则判断", "模型解释", "假设", "未解决问题", "能力边界"],
+      "accepted_statuses": ["completed", "completed_with_warnings"],
+      "assertions": [
+        {"assertion_id": "las-row-count", "source": "evidence:las-analysis", "selector": "/tool_results/0/data/row_count", "operator": "exact", "expected": 8},
+        {"assertion_id": "las-rule-pack", "source": "evidence:las-analysis", "selector": "/tool_results/2/data/rule_pack/version", "operator": "exact", "expected": "1.0.0"},
+        {"assertion_id": "las-figure-source", "source": "artifact:figure_metadata", "selector": "/source_result_ids", "operator": "contains", "expected": "las.quality-rules"}
+      ],
+      "forbidden_report_phrases": ["确定为油层", "保证可用于解释"],
+      "metadata": {"fixture_class": "synthetic", "professional_review": "required"}
+    }
+  ]
+}

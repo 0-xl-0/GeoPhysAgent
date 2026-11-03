@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "protocol_version": "2025-11-25",
+  "id": "geophysagent-readonly-example",
+  "version": "0.1.0",
+  "display_name": "GeoPhysAgent read-only MCP example",
+  "transport": {
+    "type": "stdio",
+    "command": "{python}",
+    "args": ["{manifest_dir}/readonly_server.py"],
+    "cwd": ".",
+    "command_allowlist": ["{python}"],
+    "cwd_allowlist": ["."],
+    "env_allowlist": []
+  },
+  "timeouts": {
+    "connect_seconds": 5,
+    "call_seconds": 10,
+    "shutdown_seconds": 2
+  },
+  "restart": {"max_restarts": 0},
+  "permissions": {
+    "read_assets": true,
+    "write_artifacts": false,
+    "network": false,
+    "external_control": false,
+    "modify": false,
+    "destructive": false
+  },
+  "tools": [
+    {
+      "remote_name": "describe_asset",
+      "geo_name": "integration.describe_asset",
+      "version": "0.1.0",
+      "schema_version": "1.0",
+      "model_name": "describe_external_asset",
+      "purpose": "通过独立 MCP Server 检查 Host 授权的数据资产描述。",
+      "usage_guidance": "只传 asset_id；Host 会生成不含本地路径的 DataAsset 引用。",
+      "input_capabilities": ["asset.inspect"],
+      "asset_reference_parameter": "asset",
+      "risk": "read",
+      "read_only": true,
+      "idempotent": true,
+      "replay_policy": "safe",
+      "requires_structured_content": true,
+      "expected_evidence_types": ["tool_result", "fact"],
+      "expected_artifact_roles": []
+    }
+  ]
+}

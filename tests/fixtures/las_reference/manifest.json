@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "geophysagent.synthetic-las-reference",
+  "version": "1.0.0",
+  "provenance": "Synthetic fixtures authored for parser, rules and Harness regression tests; not field data and not a substitute for professional review.",
+  "cases": [
+    {"file": "normal.las", "expect_parse": "success", "focus": ["baseline"]},
+    {"file": "wrapped.las", "expect_parse": "success", "focus": ["WRAP.YES"]},
+    {"file": "comma.las", "expect_parse": "success", "focus": ["DLM.COMMA"]},
+    {"file": "utf8_vendor.las", "expect_parse": "success", "focus": ["utf-8", "vendor-alias", "vendor-section"]},
+    {"file": "descending.las", "expect_parse": "success", "focus": ["descending-index"]},
+    {"file": "null_heavy.las", "expect_parse": "success", "focus": ["missing-values"]},
+    {"file": "flatline.las", "expect_parse": "success", "focus": ["flatline"]},
+    {"file": "spike.las", "expect_parse": "success", "focus": ["spike", "jump"]},
+    {"file": "out_of_range.las", "expect_parse": "success", "focus": ["physical-range"]},
+    {"file": "damaged_row.las", "expect_parse": "error", "focus": ["row-arity"]}
+  ]
+}

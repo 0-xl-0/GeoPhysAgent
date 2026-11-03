@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "operation": "sort_rows",
+      "by": "MD",
+      "direction": "ascending"
+    },
+    {
+      "operation": "interpolate_linear",
+      "x": "MD",
+      "columns": ["GR"],
+      "max_gap": 2.0
+    },
+    {
+      "operation": "rename_columns",
+      "mapping": {
+        "MD": "DEPTH"
+      }
+    }
+  ]
+}
+

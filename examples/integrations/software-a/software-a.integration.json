@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "protocol_version": "2025-11-25",
+  "id": "software-a-readonly",
+  "version": "0.1.0",
+  "display_name": "Software A read-only API connector",
+  "transport": {
+    "type": "stdio",
+    "command": "{python}",
+    "args": ["{manifest_dir}/server.py"],
+    "cwd": ".",
+    "command_allowlist": ["{python}"],
+    "cwd_allowlist": ["."],
+    "env_allowlist": ["SOFTWARE_A_API_BASE", "SOFTWARE_A_API_TOKEN"]
+  },
+  "timeouts": {
+    "connect_seconds": 5,
+    "call_seconds": 20,
+    "shutdown_seconds": 2
+  },
+  "restart": {"max_restarts": 0},
+  "permissions": {
+    "read_assets": false,
+    "compute": false,
+    "network_read": true,
+    "write_artifacts": false,
+    "network": false,
+    "external_control": false,
+    "modify": false,
+    "destructive": false
+  },
+  "network_policy": {
+    "allowed_origins": ["http://127.0.0.1:8765"]
+  },
+  "tools": [
+    {
+      "remote_name": "list_seismic_datasets",
+      "geo_name": "software_a.list_seismic_datasets",
+      "version": "0.1.0",
+      "schema_version": "1.0",
+      "model_name": "software_a_list_seismic_datasets",
+      "purpose": "列出软件 A 指定项目中的地震数据及其只读概要。",
+      "usage_guidance": "先使用用户提供的项目名称查询；返回结果是外部 API 的只读快照。",
+      "input_capabilities": [],
+      "risk": "read",
+      "read_only": true,
+      "idempotent": true,
+      "replay_policy": "safe",
+      "requires_structured_content": true,
+      "expected_evidence_types": ["tool_result", "fact"],
+      "expected_artifact_roles": []
+    },
+    {
+      "remote_name": "inspect_seismic_dataset",
+      "geo_name": "software_a.inspect_seismic_dataset",
+      "version": "0.1.0",
+      "schema_version": "1.0",
+      "model_name": "software_a_inspect_seismic_dataset",
+      "purpose": "读取软件 A 中一个地震数据对象的元信息。",
+      "usage_guidance": "只有在项目和数据名称已经由用户或前一步 Tool 明确后调用。",
+      "input_capabilities": [],
+      "risk": "read",
+      "read_only": true,
+      "idempotent": true,
+      "replay_policy": "safe",
+      "requires_structured_content": true,
+      "expected_evidence_types": ["tool_result", "fact"],
+      "expected_artifact_roles": []
+    }
+  ]
+}

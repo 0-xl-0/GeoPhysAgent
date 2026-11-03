@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "id": "software-a-readonly",
+  "version": "0.1.0",
+  "display_name": "Software A read-only connector",
+  "description": "Example Integration Package that maps a reviewed Software A HTTP API to MCP Tools.",
+  "mcp_manifest": "software-a.integration.json",
+  "files": [
+    "software-a.integration.json",
+    "server.py"
+  ]
+}

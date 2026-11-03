@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "geophysagent.las-qc",
+  "version": "1.0.0",
+  "title": "GeoPhysAgent conservative LAS quality-control rules",
+  "source": "CWLS LAS 2.0 Update January 2017 for format checks; GeoPhysAgent v0.1 conservative defaults for signal checks, not petrophysical interpretation",
+  "metadata": {
+    "aliases": {
+      "index": ["DEPT", "DEPTH", "TIME", "INDEX", "MD", "MDEPTH"],
+      "gamma_ray": ["GR", "GRC", "GAM", "GAMMA"],
+      "bulk_density": ["RHOB", "RHOZ", "DEN"],
+      "neutron_porosity": ["NPHI", "TNPH", "NEUT"],
+      "caliper": ["CALI", "CAL", "HCAL"],
+      "resistivity": ["RT", "RESD", "RESM", "RESS", "ILD", "LLD", "AT90"],
+      "sonic_slowness": ["DT", "DTC", "AC"]
+    },
+    "unit_aliases": {
+      "M": "m",
+      "F": "ft",
+      "FT": "ft",
+      "API": "gAPI",
+      "GAPI": "gAPI",
+      "G/C3": "g/cm3",
+      "G/CC": "g/cm3",
+      "G/CM3": "g/cm3",
+      "K/M3": "kg/m3",
+      "KG/M3": "kg/m3",
+      "V/V": "v/v",
+      "%": "%",
+      "PU": "pu",
+      "OHMM": "ohm.m",
+      "OHM.M": "ohm.m",
+      "US/F": "us/ft",
+      "US/FT": "us/ft",
+      "US/M": "us/m",
+      "IN": "in",
+      "MM": "mm"
+    },
+    "physical_ranges": {
+      "gamma_ray": {"unit": "gAPI", "minimum": -20.0, "maximum": 300.0},
+      "bulk_density": {"unit": "g/cm3", "minimum": 0.8, "maximum": 3.5},
+      "neutron_porosity": {"unit": "v/v", "minimum": -0.15, "maximum": 1.0},
+      "caliper": {"unit": "in", "minimum": 0.0, "maximum": 30.0},
+      "resistivity": {"unit": "ohm.m", "minimum": 0.000001, "maximum": 1000000.0},
+      "sonic_slowness": {"unit": "us/ft", "minimum": 20.0, "maximum": 300.0}
+    }
+  },
+  "rules": [
+    {
+      "rule_id": "las.format.version",
+      "version": "1.0.0",
+      "title": "LAS version and mandatory section check",
+      "source": "CWLS LAS 2.0 Update January 2017",
+      "parameters": {"supported_version": "2.0"},
+      "applicability": "All LAS reference-product inputs"
+    },
+    {
+      "rule_id": "las.index.consistency",
+      "version": "1.0.0",
+      "title": "Index mnemonic, unit, STRT, STOP and STEP consistency",
+      "source": "CWLS LAS 2.0 Update January 2017",
+      "parameters": {"standard_index_mnemonics": ["DEPT", "DEPTH", "TIME", "INDEX"]},
+      "applicability": "First curve and ~Well index parameters"
+    },
+    {
+      "rule_id": "las.curve.missing",
+      "version": "1.0.0",
+      "title": "Curve missing-value ratio",
+      "source": "GeoPhysAgent v0.1 conservative QC default",
+      "parameters": {"warning_ratio": 0.2},
+      "applicability": "Non-index numeric curves"
+    },
+    {
+      "rule_id": "las.curve.range",
+      "version": "1.0.0",
+      "title": "Broad physical plausibility range",
+      "source": "GeoPhysAgent v0.1 conservative QC default; requires user review",
+      "parameters": {"maximum_examples": 10},
+      "applicability": "Recognized curve family with supported unit"
+    },
+    {
+      "rule_id": "las.curve.flatline",
+      "version": "1.0.0",
+      "title": "Consecutive constant-value run",
+      "source": "GeoPhysAgent v0.1 deterministic signal QC",
+      "parameters": {"minimum_run": 4, "relative_tolerance": 1e-09},
+      "applicability": "Non-index numeric curves with at least four valid samples"
+    },
+    {
+      "rule_id": "las.curve.spike",
+      "version": "1.0.0",
+      "title": "Local isolated spike candidate",
+      "source": "GeoPhysAgent v0.1 deterministic signal QC",
+      "parameters": {"window_radius": 2, "mad_multiplier": 6.0},
+      "applicability": "Non-index numeric curves with at least five valid local samples"
+    },
+    {
+      "rule_id": "las.curve.jump",
+      "version": "1.0.0",
+      "title": "Abrupt first-difference candidate",
+      "source": "GeoPhysAgent v0.1 deterministic signal QC",
+      "parameters": {"mad_multiplier": 6.0},
+      "applicability": "Non-index numeric curves with at least four valid differences"
+    }
+  ]
+}
